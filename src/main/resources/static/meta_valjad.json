@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "toiminguTyybiKoodNimiJaVersioon": {
+      "type": "string",
+      "required": true
+    },
+    "eToimikuId": {
+      "type": "integer",
+      "default": 21,
+      "minimum": 18,
+      "maximum": 99000000000
+    }
+  }
+}

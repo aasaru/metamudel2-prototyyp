@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "koostamiseKuupaev": {
+      "title": "Koostamise kuupäev",
+      "$ref": "lihtatribuut/aeg_kuupaev-ilma-kellaajata.json"
+    },
+    "koostamiseKoht": {
+      "title": "Koostamise koht",
+      "type": "string"
+    },
+    "koostajaStruktYksus": {
+      "title": "Koostaja struktuuriüksus",
+      "type": "string",
+      "enum": [
+        "üksus 1",
+        "üksus 10",
+        "üksus 11"
+      ]
+    }
+  }
+}

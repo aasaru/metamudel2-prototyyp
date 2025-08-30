@@ -1,0 +1,23 @@
+{
+  "title": "Toiming",
+  "type": "object",
+  "id": "toiming",
+  "properties": {
+    "meta": {
+      "title": "Toimingu metaandmed",
+      "propertyOrder": 10,
+      "type": "object",
+      "$ref": "meta_valjad.json"
+    },
+    "yld": {
+      "type": "object",
+      "title": "Toimingu üldandmed",
+      "propertyOrder": 20
+    },
+    "sisu": {
+      "type": "object",
+      "title": "Toimingu sisuandmed",
+      "propertyOrder": 30
+    }
+  }
+}

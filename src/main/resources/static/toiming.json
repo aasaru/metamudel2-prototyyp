@@ -1,0 +1,98 @@
+{
+  "$ref": "baastoiming.json",
+  "properties": {
+    "meta": {
+      "type": "object",
+      "properties": {
+        "toiminguTyybiKoodNimiJaVersioon": {
+          "const": "HMKombKiirMSeadKasProt_1.3",
+          "default": "HMKombKiirMSeadKasProt_1.3",
+          "readonly": true
+        }
+      }
+    },
+    "yld": {
+      "$ref": "yld_vaikimisi_valjad.json"
+    },
+    "sisu": {
+      "type": "object",
+      "title": "Toimingu sisuandmed",
+      "propertyOrder": 30,
+      "properties": {
+        "mootmiseTulemus": {
+          "propertyOrder": 10,
+          "type": "array",
+          "format": "table",
+          "title": "Mõõtmise tulemus",
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "soiduk": {
+                "title": "Õigusrikkumisel kasutatud sõiduk/haagis",
+                "type": "string"
+              },
+              "selgitus": {
+                "title": "Selgitus",
+                "type": "string"
+              },
+              "mootmisLugem": {
+                "title": "Õigusrikkumisel kasutatud sõiduki kiiruse mõõtmise tulemus (km/h)",
+                "type": "integer"
+              },
+              "laiendmaaramatus": {
+                "title": "Laiendmääramatus (km/h)",
+                "type": "integer",
+                "required": true
+              },
+              "lubatudKiirus": {
+                "title": "Lubatud sõidukiirus",
+                "type": "integer",
+                "required": true
+              },
+              "uletatudKiirus": {
+                "title": "Ületatud kiirus",
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "liikumisviisiValik": {
+          "title": "Liikumisviisi valik",
+          "type": "array",
+          "format": "checkbox",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["Vastassuunalisel",
+              "Pärisuunalisel",
+              "Lähenes",
+              "Eemaldus patrullautost",
+              "Liikus üksinda",
+              "Mitu sõidukit",
+              "Sõidukite kolonn",
+              "Kiirendas intensiivselt",
+              "Jõudis järele pärisuunas ees liikuvale sõidukile",
+              "Jõudis ette pärisuunas eesliikuvast sõidukist",
+              "Sagedaste ümberreastumistega möödus eesliikuvatest sõidukitest",
+              "Sooritas möödasõidu",
+              "Möödus kõrval sõidurajal liikuvatest sõidukitest",
+              "Muu"]
+          }
+        },
+        "seadmeTestimisAeg3": {
+          "title": "Muu kuupäev",
+          "$ref": "lihtatribuut/aeg_kuupaev-kellaaeg.json"
+        },
+        "seadmeTestimisAeg2": {
+          "title": "Seadme testimise aeg 2",
+          "$ref": "lihtatribuut/aeg_kuupaev-kellaaeg.json"
+        },
+        "kasutatiTehnikavahendeid": {
+          "title": "Järelevalve toimingus kasutati tehnikavahendeid",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

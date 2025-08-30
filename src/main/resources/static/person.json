@@ -1,0 +1,76 @@
+{
+  "$ref": "basic_person.json",
+  "properties": {
+    "location": {
+      "type": "object",
+      "title": "Location",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "citystate": {
+          "type": "string",
+          "description": "This is generated automatically from the previous two fields",
+          "template": "{{city}}, {{state}}",
+          "watch": {
+            "city": "person.location.city",
+            "state": "person.location.state"
+          }
+        }
+      }
+    },
+    "mootmiseTulemus": {
+      "type": "array",
+      "format": "table",
+      "title": "Mõõtmise tulemus",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "soiduk": {
+            "title": "Õigusrikkumisel kasutatud sõiduk/haagis",
+            "type": "string"
+          },
+          "selgitus": {
+            "title": "Selgitus",
+            "type": "string"
+          },
+          "mootmisLugem": {
+            "title": "Õigusrikkumisel kasutatud sõiduki kiiruse mõõtmise tulemus (km/h)",
+            "type": "integer"
+          },
+          "laiendmaaramatus": {
+            "title": "Laiendmääramatus (km/h)",
+            "type": "integer",
+            "required": true
+          },
+          "uletatudKiirus": {
+            "title": "Ületatud kiirus",
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "cars": {
+        "type": "array",
+        "format": "tabs",
+        "title": "Cars",
+        "uniqueItems": false,
+        "items":{
+            "type": "object",
+            "title": "Car",
+            "properties": {
+                "manufacturer": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+  }
+}
