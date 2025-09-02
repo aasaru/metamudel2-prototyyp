@@ -1,10 +1,13 @@
 package ee.smit.metamudel2.model.business;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Getter
 @Entity
 @Table(name = "toimingu_eksemplar")
 public class ToiminguEksemplar {
@@ -13,6 +16,7 @@ public class ToiminguEksemplar {
     }
 
     @Id
+    @Setter
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(name="toimingu_tyyp", nullable=false)
@@ -25,31 +29,11 @@ public class ToiminguEksemplar {
     private String json;
 
 
-    public ToiminguEksemplar(Long id, String toiminguTyyp, String koostaja, LocalDateTime koostamiseAeg, String json) {
-        this.id = id;
+    public ToiminguEksemplar(String toiminguTyyp, String koostaja, LocalDateTime koostamiseAeg, String json) {
         this.toiminguTyyp = toiminguTyyp;
         this.koostaja = koostaja;
         this.koostamiseAeg = koostamiseAeg;
         this.json = json;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getToiminguTyyp() {
-        return toiminguTyyp;
-    }
-
-    public String getKoostaja() {
-        return koostaja;
-    }
-
-    public LocalDateTime getKoostamiseAeg() {
-        return koostamiseAeg;
-    }
-
-    public String getJson() {
-        return json;
-    }
 }

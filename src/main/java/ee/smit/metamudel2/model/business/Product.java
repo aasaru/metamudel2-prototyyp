@@ -2,7 +2,7 @@ package ee.smit.metamudel2.model.business;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "product")

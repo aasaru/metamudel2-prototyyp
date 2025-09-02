@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+    <head>
+        <title>Toimingute nimekiri</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+
+    <p th:if="${#lists.isEmpty(toiminguEksemplarList)}">Ühtegi toimingut ei ole veel salvestatud.</p>
+
+
+    <ul>
+        <li th:each="toiming : ${toiminguEksemplarList}">
+            <a th:href="@{'/toimingu-redaktor?toimingu-eksemplar-id=' + ${toiming.id}}"
+               th:text="${'#'+toiming.id + ' tüüpi' + toiming.toiminguTyyp + ' salvestatud ' + #temporals.format(toiming.koostamiseAeg, 'dd.MM.yyyy HH:mm:ss')}"></a>
+        </li>
+
+
+    </ul>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Advanced JSON Editor Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js"></script>
+      <style>
+          /* Hide "Object Properties" button */
+          .json-editor-btntype-properties {
+              display: none;
+          }
+          input[type="text"] {
+              width: 500px;
+          }
+          .compact input[type="text"] {
+              width: 140px;
+          }
+          .je-header span {
+              font: bold 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+          }
+      </style>
+  </head>
+  <body>
+    <h1>Toimingu sisestamise näidis</h1>
+    
+    <button id='salvesta'>Salvesta</button>
+    <button id='kinnita'>Kinnita</button>
+    <button id='teostaArvutused'>Teosta arvutused</button>
+    <button id='enable_disable'>Disable/Enable Form</button>
+    <span id='valid_indicator'></span>
+    
+    <div id='editor_holder'></div>
+
+    <p th:if="${modelToiminguEksemplarId==null}">Ei ole id-d antud ette.</p>
+    <p th:if="${modelToiminguEksemplarId!=null}">Id on antud ette.</p>
+
+
+
+    <script>
+        var toiminguEksemplarId=null;
+        var urlLopp = "";
+    </script>
+    <script th:inline="javascript" th:if="${modelToiminguEksemplarId != null}">
+        toiminguEksemplarId=/*[[${modelToiminguEksemplarId}]]*/;
+        urlLopp = "?toimingu-eksemplar-id=[[${modelToiminguEksemplarId}]]";
+    </script>
+
+
+
+
+    <script>
+
+
+
+
+        var serveriVead = [];
+
+        JSONEditor.defaults.languages.et = {
+            error_notset: "põle antud",
+            error_type: "Sisestatud väärtus peab olema {{0}}-tüüpi",
+        };
+        JSONEditor.defaults.language = "et";
+
+
+
+
+
+      var starting_value = {}
+        /*
+        {
+          meta: {
+              toiminguTyybiKoodNimi: "kainenemaToiming",
+              versionMajor: 3,
+              versionMinor: 1
+          },
+          yld: {
+            koostamiseKuupaev: "2024-12-14",
+            koostamiseKoht: "33",
+          },
+          sisu: {
+
+          }
+        }
+      ;
+
+         */
+      
+      // Initialize the editor
+      var editor = new JSONEditor(document.getElementById('editor_holder'),{
+        // Enable fetching schemas via ajax
+        ajax: true,
+
+        disable_array_delete_all_rows: true,
+        disable_array_delete_last_row: true,
+        disable_array_reorder: true,
+        disable_collapse: true,
+        disable_edit_json: true,
+
+          // The schema for the editor
+        schema: {
+            $ref: "toimingu-tyyp?range=true"
+        },
+        
+        // Seed the form with a starting value
+        startval: starting_value,
+
+        show_errors: "interaction",
+        
+        // Disable additional properties
+        no_additional_properties: true,
+        
+        // Require all properties by default
+        required_by_default: true
+      });
+
+      // Hook up the salvesta button to log to the console
+      document.getElementById('salvesta').addEventListener('click',function() {
+        // Get the value from the editor
+
+          console.log('vajutas salvesta');
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://localhost:8080/api/v1/toimingu-eksemplar"+urlLopp, true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(
+              editor.getValue()
+          ));
+          console.log('tehtud salvesta');
+      });
+      
+      // Kui kasutaja vajutab "Teosta arvutused" nuppu
+      document.getElementById('teostaArvutused').addEventListener('click',function() {
+
+          // saada ja säti väärtus
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "http://localhost:8080/api/v1/toimingu-eksemplar"+urlLopp, true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.send(JSON.stringify(
+              editor.getValue()
+          ));
+
+
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  console.log("serverist saabus vastus:"+xhr.responseText);
+
+                  let tagastatudPayload = JSON.parse(xhr.responseText);
+                  editor.setValue(tagastatudPayload.toiming);
+
+
+                  serveriVead = tagastatudPayload.veateated;
+
+                  return true;
+
+              }
+          }
+
+
+
+
+
+      });
+
+
+
+      // Hook up the enable/disable button
+      document.getElementById('enable_disable').addEventListener('click',function() {
+        // Enable form
+        if(!editor.isEnabled()) {
+          editor.enable();
+        }
+        // Disable form
+        else {
+          editor.disable();
+        }
+      });
+
+
+        editor.on('ready',() => {
+
+            if (toiminguEksemplarId != null) {
+
+                var xhrGet = new XMLHttpRequest();
+                xhrGet.open("GET", "http://localhost:8080/api/v1/toimingu-eksemplar/"+toiminguEksemplarId, true);
+                xhrGet.setRequestHeader('Content-Type', 'application/json');
+                xhrGet.send();
+                xhrGet.onreadystatechange = function() {
+                    if (xhrGet.readyState === XMLHttpRequest.DONE) {
+
+
+                        console.log("serverist saabus toimingu JSON:"+xhrGet.responseText);
+
+                        let tagastatudPayload = JSON.parse(xhrGet.responseText);
+                        editor.setValue(tagastatudPayload);
+
+                        return true;
+                    }
+                }
+            }
+        });
+
+      // Hook up the validation indicator to update its 
+      // status whenever the editor changes
+      editor.on('change',function() {
+        // Get an array of errors from the validator
+
+
+        var errors = editor.validate();
+        errors.push(...serveriVead);
+
+        Object.values(editor.editors).forEach(editor => {
+          if (editor != null) {
+              editor.is_dirty = true // If not dirty the editor will not display errors
+              editor.showValidationErrors(errors) // every editor filters errors by path
+          }
+        })
+
+        var indicator = document.getElementById('valid_indicator');
+        
+        // Not valid
+        if(errors.length) {
+          indicator.style.color = 'red';
+          indicator.textContent = "sisestatud andmestik ei vasta toimingu tüübi reeglistikule";
+        }
+        // Valid
+        else {
+          indicator.style.color = 'green';
+          indicator.textContent = "vastab reeglistikule";
+        }
+
+
+
+      });
+    </script>
+  </body>
+</html>
