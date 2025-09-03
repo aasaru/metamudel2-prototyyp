@@ -1,4 +1,4 @@
-package ee.smit.metamudel2.model.business;
+package ee.smit.metamudel2.model.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;

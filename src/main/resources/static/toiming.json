@@ -21,7 +21,7 @@
       "properties": {
           "soiduk": {
             "type": "object",
-            "title": "Toimingu sisuandmed",
+            "title": "Sõiduk (tuleb otsida Objektide registrist)",
             "propertyOrder": 1,
             "properties": {
               "id": {
@@ -31,7 +31,8 @@
               },
               "registrimark": {
                 "title": "Õigusrikkumisel kasutatud sõiduk/haagis",
-                "type": "string"
+                "type": "string",
+                "readonly": true
               }
             }
           },

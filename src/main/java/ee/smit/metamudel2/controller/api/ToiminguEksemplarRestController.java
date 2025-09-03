@@ -3,9 +3,10 @@ package ee.smit.metamudel2.controller.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.smit.metamudel2.model.business.ToiminguEksemplar;
-import ee.smit.metamudel2.model.business.Vastus;
-import ee.smit.metamudel2.model.business.Veateade;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import ee.smit.metamudel2.model.db.ToiminguEksemplar;
+import ee.smit.metamudel2.model.api.Vastus;
+import ee.smit.metamudel2.model.api.Veateade;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,6 +58,35 @@ public class ToiminguEksemplarRestController {
         Veateade veateade = new Veateade("root.yld.koostamiseKuupaev", "format", "teade1");
         return new Vastus(toiming, new Veateade[]{veateade});
     }
+
+
+
+    @PostMapping("/teosta-arvutused")
+    @Operation(summary = "Teosta arvutused")
+    @ApiResponse(responseCode = "201", description = "JSON object received")
+    public Vastus teostaArvutused(@RequestParam(value = "toimingu-eksemplar-id", required = false) Long toiminguEksemplariId, @RequestBody JsonNode toiming) {
+        System.out.println("Jackson JSON object received: " + toiming);
+
+        int mootmisLugem = Integer.parseInt(toiming.get("sisu").get("mootmisLugem").toString());
+        int lubatudKiirus = Integer.parseInt(toiming.get("sisu").get("lubatudKiirus").toString());
+        int yletatud = mootmisLugem - lubatudKiirus;
+
+        System.out.println("mootmisLugem:" +mootmisLugem);
+        System.out.println("lubatudKiirus:" +lubatudKiirus);
+
+        ObjectNode toimingO = (ObjectNode)toiming;
+        ObjectNode sisuO = (ObjectNode)toiming.get("sisu");
+        sisuO.put("uletatudKiirus", ""+yletatud);
+        toimingO.put("sisu", sisuO);
+
+
+
+
+        return new Vastus(toimingO, new Veateade[]{});
+    }
+
+
+
 
     @PostMapping("vana")
     @Operation(summary = "Accept arbitrary JSON object")

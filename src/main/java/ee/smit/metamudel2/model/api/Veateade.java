@@ -1,4 +1,4 @@
-package ee.smit.metamudel2.model.business;
+package ee.smit.metamudel2.model.api;
 
 import lombok.Data;
 

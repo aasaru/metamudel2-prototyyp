@@ -1,7 +1,7 @@
 package ee.smit.metamudel2.controller.ui;
 
 
-import ee.smit.metamudel2.model.business.ToiminguEksemplar;
+import ee.smit.metamudel2.model.db.ToiminguEksemplar;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

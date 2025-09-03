@@ -1,6 +1,6 @@
-package ee.smit.metamudel2.service.business;
+package ee.smit.metamudel2.service;
 
-import ee.smit.metamudel2.model.business.ToiminguEksemplar;
+import ee.smit.metamudel2.model.db.ToiminguEksemplar;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

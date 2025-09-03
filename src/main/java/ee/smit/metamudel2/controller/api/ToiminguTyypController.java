@@ -1,4 +1,4 @@
-package ee.smit.metamudel2.controller;
+package ee.smit.metamudel2.controller.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +14,7 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/toimingu-tyyp")
 @RequiredArgsConstructor
-@Tag(name = "Toimingu tüübi definitsioonid (JSON Schema kujul")
+@Tag(name = "Toimingu tüübi definitsioonid (JSON Schema kujul)")
 public class ToiminguTyypController {
 
     @GetMapping
