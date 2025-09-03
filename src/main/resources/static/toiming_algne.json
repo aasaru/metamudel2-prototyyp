@@ -19,46 +19,43 @@
       "title": "Toimingu sisuandmed",
       "propertyOrder": 30,
       "properties": {
-          "soiduk": {
+        "mootmiseTulemus": {
+          "propertyOrder": 10,
+          "type": "array",
+          "format": "table",
+          "title": "Mõõtmise tulemus",
+          "uniqueItems": true,
+          "items": {
             "type": "object",
-            "title": "Toimingu sisuandmed",
-            "propertyOrder": 1,
             "properties": {
-              "id": {
-                "title": "Sõiduki ID (mittemuudetav)",
-                "type": "string",
-                "readonly": true
-              },
-              "registrimark": {
+              "soiduk": {
                 "title": "Õigusrikkumisel kasutatud sõiduk/haagis",
                 "type": "string"
+              },
+              "selgitus": {
+                "title": "Selgitus",
+                "type": "string"
+              },
+              "mootmisLugem": {
+                "title": "Õigusrikkumisel kasutatud sõiduki kiiruse mõõtmise tulemus (km/h)",
+                "type": "integer"
+              },
+              "laiendmaaramatus": {
+                "title": "Laiendmääramatus (km/h)",
+                "type": "integer",
+                "required": true
+              },
+              "lubatudKiirus": {
+                "title": "Lubatud sõidukiirus",
+                "type": "integer",
+                "required": true
+              },
+              "uletatudKiirus": {
+                "title": "Ületatud kiirus",
+                "type": "integer"
               }
             }
-          },
-          "selgitus": {
-            "title": "Selgitus",
-            "type": "string"
-          },
-          "mootmisLugem": {
-            "title": "Õigusrikkumisel kasutatud sõiduki kiiruse mõõtmise tulemus (km/h)",
-            "type": "integer"
-          },
-          "laiendmaaramatus": {
-            "title": "Laiendmääramatus (km/h)",
-            "type": "integer",
-            "required": true
-          },
-          "lubatudKiirus": {
-            "title": "Lubatud sõidukiirus",
-            "type": "integer",
-            "required": true
-          },
-          "uletatudKiirus": {
-            "title": "Ületatud kiirus",
-            "type": "integer"
           }
-
-
         },
         "liikumisviisiValik": {
           "title": "Liikumisviisi valik",

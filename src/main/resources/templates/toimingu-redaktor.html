@@ -26,13 +26,13 @@
     <button id='salvesta'>Salvesta</button>
     <button id='kinnita'>Kinnita</button>
     <button id='teostaArvutused'>Teosta arvutused</button>
-    <button id='enable_disable'>Disable/Enable Form</button>
+    <button id='enable_disable'>Näita lugemisvaates</button>
     <span id='valid_indicator'></span>
     
     <div id='editor_holder'></div>
 
-    <p th:if="${modelToiminguEksemplarId==null}">Ei ole id-d antud ette.</p>
-    <p th:if="${modelToiminguEksemplarId!=null}">Id on antud ette.</p>
+    <p th:if="${modelToiminguEksemplarId==null}">Uue toimingu lisamine.</p>
+    <p th:if="${modelToiminguEksemplarId!=null}">Olemasoleva toimingu muutmine.</p>
 
 
 
@@ -233,5 +233,9 @@
 
       });
     </script>
+
+
+
+    <div th:insert="fragments/modalSoiduk :: modalSoiduk">Sõiduki modaal</div>
   </body>
 </html>

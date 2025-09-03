@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    ...
+</head>
+<body>
+<div th:fragment="modalSoiduk">
+    <!-- A modal dialog containing a form -->
+    <dialog id="favDialog">
+        <form>
+            <p>
+                <label>
+                    Vali otsitulemuste seast õige:
+                    <select>
+                        <option value="default">Vali…</option>
+                        <option value="111|soidukA">Sõiduk A</option>
+                        <option value="222|soidukB">Sõiduk B</option>
+                        <option value="333|soidukC">Sõiduk C</option>
+                    </select>
+                </label>
+            </p>
+            <div>
+                <button value="cancel" formmethod="dialog">Tühista</button>
+                <button id="confirmBtn" value="default">Kinnita</button>
+            </div>
+        </form>
+    </dialog>
+    <p>
+        <button id="showDialog">Sõiduki otsimise dialoog</button>
+    </p>
+    <output></output>
+
+    <script>
+        const showButton = document.getElementById("showDialog");
+        const favDialog = document.getElementById("favDialog");
+        const outputBox = document.querySelector("output");
+        const selectEl = favDialog.querySelector("select");
+        const confirmBtn = favDialog.querySelector("#confirmBtn");
+
+        // "Show the dialog" button opens the <dialog> modally
+        showButton.addEventListener("click", () => {
+            favDialog.showModal();
+            favDialog.dataset.caller = "root[sisu][soiduk]";
+        });
+
+        // "Cancel" button closes the dialog without submitting because of [formmethod="dialog"], triggering a close event.
+        favDialog.addEventListener("close", (e) => {
+            outputBox.value =
+                favDialog.returnValue === "default"
+                    ? "No return value."
+                    : `ReturnValue: ${favDialog.returnValue}.`; // Have to check for "default" rather than empty string
+        });
+
+        // Prevent the "confirm" button from the default behavior of submitting the form, and close the dialog with the `close()` method, which triggers the "close" event.
+        confirmBtn.addEventListener("click", (event) => {
+            event.preventDefault(); // We don't want to submit this fake form
+
+            let valitud = selectEl.value.split("|")
+
+            if (selectEl.value !== "default") {
+
+
+                console.log(favDialog.dataset.caller + " väärtuseks määran "+ valitud[0])
+
+                document.getElementById( favDialog.dataset.caller +"[id]").value = valitud[0];
+                document.getElementById( favDialog.dataset.caller +"[registrimark]").value = valitud[1];
+
+            }
+
+
+            favDialog.close(selectEl.value); // Have to send the select box value here.
+        });
+    </script>
+</div>
+</body>
+</html>
+
