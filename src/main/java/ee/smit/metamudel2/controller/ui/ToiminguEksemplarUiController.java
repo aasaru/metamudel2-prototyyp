@@ -1,7 +1,7 @@
 package ee.smit.metamudel2.controller.ui;
 
 
-import ee.smit.metamudel2.model.db.ToiminguEksemplar;
+import ee.smit.metamudel2.model.db.DbToiminguEksemplar;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,15 +24,15 @@ public class ToiminguEksemplarUiController {
 
     @GetMapping("/salvestatud-toimingud")
     public String salvestatudToimingud(Model model) {
-        List<ToiminguEksemplar> toiminguEksemplarList = repository.findAllByOrderById();
+        List<DbToiminguEksemplar> dbToiminguEksemplarList = repository.findAllByOrderById();
 
-        model.addAttribute("toiminguEksemplarList", toiminguEksemplarList);
+        model.addAttribute("toiminguEksemplarList", dbToiminguEksemplarList);
         return "salvestatud-toimingud";
     }
 
     @GetMapping("/toimingu-redaktor")
     public String toiminguRedaktor(
-            @RequestParam(name = "toimingu-eksemplar-id", required = false) Long toiminguEksemparId,
+            @RequestParam(name = "toimingu-eksemplar-id", required = false) UUID toiminguEksemparId,
             Model model) {
 
         model.addAttribute("modelToiminguEksemplarId", toiminguEksemparId);

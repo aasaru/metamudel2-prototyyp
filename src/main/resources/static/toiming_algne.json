@@ -4,9 +4,9 @@
     "meta": {
       "type": "object",
       "properties": {
-        "toiminguTyybiKoodNimiJaVersioon": {
-          "const": "HMKombKiirMSeadKasProt_1.3",
-          "default": "HMKombKiirMSeadKasProt_1.3",
+        "toimingutyypValjalase": {
+          "const": "HMKombKiirMSeadKasProt_v1",
+          "default": "HMKombKiirMSeadKasProt_v1",
           "readonly": true
         }
       }

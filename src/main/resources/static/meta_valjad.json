@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "toiminguTyybiKoodNimiJaVersioon": {
+    "toimingutyypValjalase": {
       "type": "string",
       "required": true
     },

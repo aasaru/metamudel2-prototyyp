@@ -1,0 +1,14 @@
+-- https://blog.logto.io/implement-multi-tenancy
+
+
+-- Enable Row-Level security
+alter table customers enable row level security;
+
+-- Create security policy
+create policy crm_tenant_access_policy
+    on customers
+    for all
+    to crm_tenant -- this policy applies to users with the database role crm_tenant
+    as restrictive
+using (tenant_id = (select id from tenants where db_user = current_user))
+with check (tenant_id = (select id from tenants where db_user = current_user))

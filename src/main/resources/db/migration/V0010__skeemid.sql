@@ -1,0 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS metamudel2;
+CREATE SCHEMA IF NOT EXISTS menetluse_baaskomponent;
+CREATE SCHEMA IF NOT EXISTS laekumiste_haldus_leemet;
+CREATE SCHEMA IF NOT EXISTS t88ylesanded_t8lp;
+CREATE SCHEMA IF NOT EXISTS marsruuter;
+CREATE SCHEMA IF NOT EXISTS asurlus;

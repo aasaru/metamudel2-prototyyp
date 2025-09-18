@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+        app:
+                image: 'metamudel2-app'
+                container_name: 'metamudel2-app-container'
+                ports:
+                        - "8080:8080"
+                depends_on:
+                        - postgres
+                environment:
+                        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/metamudel2_prototyyp
+                        SPRING_DATASOURCE_USERNAME: admin
+                        SPRING_DATASOURCE_PASSWORD: parool
+
+
+        postgres:
+                image: 'postgres:17-alpine'
+                container_name: 'metamudel2-postgres-container'
+                ports:
+                        - "5432:5432"
+                environment:
+                        POSTGRES_USER: admin
+                        POSTGRES_PASSWORD: parool
+                        POSTGRES_DB: metamudel2_prototyyp

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class Vastus {
-    private final JsonNode toiming;
+    private final ApiBaasToiminguEksemplar toiming;
     private final Veateade[] veateated;
 
 }

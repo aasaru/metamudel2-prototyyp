@@ -6,13 +6,13 @@
     </head>
     <body>
 
-    <p th:if="${#lists.isEmpty(toiminguEksemplarList)}">Ühtegi toimingut ei ole veel salvestatud.</p>
+    <p th:if="${#lists.isEmpty(dbToiminguEksemplarList)}">Ühtegi toimingut ei ole veel salvestatud.</p>
 
 
     <ul>
-        <li th:each="toiming : ${toiminguEksemplarList}">
+        <li th:each="toiming : ${dbToiminguEksemplarList}">
             <a th:href="@{'/toimingu-redaktor?toimingu-eksemplar-id=' + ${toiming.id}}"
-               th:text="${'#'+toiming.id + ' tüüpi' + toiming.toiminguTyyp + ' salvestatud ' + #temporals.format(toiming.koostamiseAeg, 'dd.MM.yyyy HH:mm:ss')}"></a>
+               th:text="${'#'+toiming.id + ' tüüpi ' + toiming.toimingutyypValjalase + ' salvestatud ' + #temporals.format(toiming.koostamiseAeg, 'dd.MM.yyyy HH:mm:ss')}"></a>
         </li>
 
 

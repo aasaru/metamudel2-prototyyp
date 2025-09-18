@@ -1,6 +1,6 @@
 package ee.smit.metamudel2.service;
 
-import ee.smit.metamudel2.model.db.ToiminguEksemplar;
+import ee.smit.metamudel2.model.db.DbToiminguEksemplar;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ public class ToiminguEksemplarService {
 
     private final ToiminguEksemplarRepository repository;
 
-    public ToiminguEksemplar save(ToiminguEksemplar toiminguEksemplar) {
-        return repository.save(toiminguEksemplar);
+    public DbToiminguEksemplar save(DbToiminguEksemplar dbToiminguEksemplar) {
+        return repository.save(dbToiminguEksemplar);
     }
 
 }

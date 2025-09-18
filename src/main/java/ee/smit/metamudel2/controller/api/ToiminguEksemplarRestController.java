@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import ee.smit.metamudel2.model.db.ToiminguEksemplar;
+import ee.smit.metamudel2.model.api.ApiBaasToiminguEksemplar;
+import ee.smit.metamudel2.model.db.DbToiminguEksemplar;
 import ee.smit.metamudel2.model.api.Vastus;
 import ee.smit.metamudel2.model.api.Veateade;
 import ee.smit.metamudel2.repository.ToiminguEksemplarRepository;
@@ -28,9 +29,9 @@ public class ToiminguEksemplarRestController {
     @GetMapping("/{id}")
     @Operation(summary = "Laadi toimingu eksemplar id järgi")
     @ApiResponse(responseCode = "200", description = "Leitud")
-    public JsonNode getToiminguEksemplarById(@PathVariable("id") Long toiminguEksemplarId) {
+    public JsonNode getToiminguEksemplarById(@PathVariable("id") UUID toiminguEksemplarId) {
 
-        Optional<ToiminguEksemplar> byId = repository.findById(toiminguEksemplarId);
+        Optional<DbToiminguEksemplar> byId = repository.findById(toiminguEksemplarId);
 
         if (byId.isPresent()) {
             ObjectMapper mapper = new ObjectMapper();
@@ -47,16 +48,23 @@ public class ToiminguEksemplarRestController {
     @PostMapping
     @Operation(summary = "Salvesta toimingu eksemplar")
     @ApiResponse(responseCode = "201", description = "JSON object received")
-    public Vastus acceptJson(@RequestParam(value = "toimingu-eksemplar-id", required = false) Long toiminguEksemplariId, @RequestBody JsonNode toiming) {
-        System.out.println("Jackson JSON object received: " + toiming);
+    public Vastus acceptJson(@RequestParam(value = "toimingu-eksemplar-id", required = false) UUID toiminguEksemplariId, @RequestBody ApiBaasToiminguEksemplar toiminguEksemplarApi) {
+        System.out.println("Jackson JSON object received: " + toiminguEksemplarApi);
 
-        ToiminguEksemplar toiminguEksemplar = new ToiminguEksemplar("tyyp1", "Juhan", LocalDateTime.now(), toiming.toString());
-        toiminguEksemplar.setId(toiminguEksemplariId);
+        DbToiminguEksemplar dbToiminguEksemplar = DbToiminguEksemplar.builder()
+                .id(toiminguEksemplariId)
+                .toimingutyypValjalase(toiminguEksemplarApi.getMeta().getToimingutyypValjalase())
+                .koostaja("Juhan")
+                .koostamiseAeg(LocalDateTime.now())
+                .json(toiminguEksemplarApi.toJsonString())
+                .build();
 
-        repository.save(toiminguEksemplar);
+        // TODO toiminguEksemplarApi.setId(toiminguEksemplariId);
+
+        repository.save(dbToiminguEksemplar);
 
         Veateade veateade = new Veateade("root.yld.koostamiseKuupaev", "format", "teade1");
-        return new Vastus(toiming, new Veateade[]{veateade});
+        return new Vastus(toiminguEksemplarApi, new Veateade[]{veateade});
     }
 
 
@@ -64,9 +72,9 @@ public class ToiminguEksemplarRestController {
     @PostMapping("/teosta-arvutused")
     @Operation(summary = "Teosta arvutused")
     @ApiResponse(responseCode = "201", description = "JSON object received")
-    public Vastus teostaArvutused(@RequestParam(value = "toimingu-eksemplar-id", required = false) Long toiminguEksemplariId, @RequestBody JsonNode toiming) {
+    public Vastus teostaArvutused(@RequestParam(value = "toimingu-eksemplar-id", required = false) Long toiminguEksemplariId, @RequestBody ApiBaasToiminguEksemplar toiming) {
         System.out.println("Jackson JSON object received: " + toiming);
-
+/*
         int mootmisLugem = Integer.parseInt(toiming.get("sisu").get("mootmisLugem").toString());
         int lubatudKiirus = Integer.parseInt(toiming.get("sisu").get("lubatudKiirus").toString());
         int yletatud = mootmisLugem - lubatudKiirus;
@@ -78,11 +86,11 @@ public class ToiminguEksemplarRestController {
         ObjectNode sisuO = (ObjectNode)toiming.get("sisu");
         sisuO.put("uletatudKiirus", ""+yletatud);
         toimingO.put("sisu", sisuO);
+*/
 
 
 
-
-        return new Vastus(toimingO, new Veateade[]{});
+        return new Vastus(null, new Veateade[]{});
     }
 
 
@@ -96,8 +104,16 @@ public class ToiminguEksemplarRestController {
 
         System.out.println("JSON object received: " + jsonSisse);
 
-        ToiminguEksemplar toiminguEksemplar = new ToiminguEksemplar("tyyp1", "Juhan", LocalDateTime.now(), null);
-        repository.save(toiminguEksemplar);
+        DbToiminguEksemplar dbToiminguEksemplar = DbToiminguEksemplar.builder()
+                .id(UUID.randomUUID())
+                .toimingutyypValjalase("tyyp1_v1")
+                .koostaja("Juhan")
+                .koostamiseAeg(LocalDateTime.now())
+                .json(null)
+                .build();
+
+
+        repository.save(dbToiminguEksemplar);
 
         Object yld = jsonSisse.get("yld");
         if (yld instanceof Map) {
